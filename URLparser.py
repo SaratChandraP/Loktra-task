@@ -27,8 +27,7 @@ def get_scheme(path):
 
 # Function to get domain of uri
 def get_domain(path):
-    dict_url = url_path_to_dict(path)
-    return dict_url['host']
+    return url_path_to_dict(path)['host']
 
 
 # Function to get queries of uri
