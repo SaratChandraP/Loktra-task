@@ -5,7 +5,7 @@ Set of tasks for Loktra. Software engineering programming tasks.
 This has been implemented successfully. Few lines are commented but can be uncommented for step by step visualization.
 
 ## Complete Python URI task
-A module name URLparser has been provided that has a couple of functions for manipulating the uri. 
+A module name URLparser has been provided that has a couple of functions for manipulating the uri. Run uri.py to test all the functions.
 As of now, the module has functions for splitting the uri into its respective components, get the scheme, domain and queries present.
  Still in development mode and has scope for more and better functionalities.
 
