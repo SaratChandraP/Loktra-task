@@ -32,13 +32,11 @@ function query1(){
     // Sending HTTP request
     request('http://www.shopping.com/products?KW=' + keyword, function (error, response, body) {
         if (error){
-            throw Error(error);
-        }
-        if (response.statusCode !== 200) {
-            return console.log("Returned response code = " + response.statusCode);
+            console.error("Error :" + error);
+            process.exit(-1);
         }
         // In case of positive response
-        if (!error && response.statusCode === 200){
+        else if (!error && response.statusCode === 200){
 
             // Load HTML content
             var $ = cheerio.load(body);
@@ -58,6 +56,9 @@ function query1(){
                 console.log("Number of results returned = " + num_results[1]);
             }
         }
+
+        else
+            console.log("Response not OK "+response.statusCode);
     })
 }
 
@@ -82,11 +83,10 @@ function query2(){
     // Sending HTTP request to specified URL with keyword and page number
     request('http://www.shopping.com/products~PG-' + page_num + '?KW=' + keyword, function (error, response, body) {
         if (error){
-            throw Error(error);
+            console.error("Error :" + error);
+            process.exit(-1);
         }
-        else if (response.statusCode !== 200) {
-            console.log("Returned response code = " + response.statusCode);
-        }
+
         // Checking for positive response
         else if (!error && response.statusCode === 200) {
             // Load HTML content
@@ -108,5 +108,8 @@ function query2(){
                 })
             }
         }
+
+        else
+            console.log("Response not OK "+response.statusCode);
     });
 }
