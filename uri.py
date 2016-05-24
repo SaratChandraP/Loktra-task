@@ -1,16 +1,40 @@
 # Python URI task
 
 import URLparser
+import unittest
 
-# uri = 'file:/dir1/dir2?hgt'
-# uri = 'http://www.google.com'
-# uri = 'http://sarat:passwrd@example.com:8080/example/example.html'
-# uri = 'http://sarat:passwrd@example.com:8080?first=example&scnd=123'
-uri = 'http://sarat:passwrd@example.com:8080?first=example'
 
-parsed_url = URLparser.url_path_to_dict(uri)
-print parsed_url
+class testURL(unittest.TestCase):
 
-print URLparser.get_scheme(uri)
-print URLparser.get_domain(uri)
-print URLparser.get_queries(uri)
+    def setUp(self):
+        test_name = self.shortDescription()
+        if test_name == "Testing get_scheme":
+            print "setting up for test_get_scheme"
+
+        elif test_name == "Testing get_domain":
+            print "setting up for test_get_domain"
+
+        elif test_name == "Testing get_queries":
+            print "setting up for test_get_domain"
+
+    def test_get_scheme(self):
+        """Testing get_scheme"""
+        url = 'http://sarat:passwrd@example.com:8080?first=example'
+        self.assertEqual("http", URLparser.get_scheme(url))
+
+    def test_get_domain(self):
+        """Testing get_domain"""
+        url = 'http://sarat:passwrd@example.com:8080?first=example'
+        self.assertEqual("example.com", URLparser.get_domain(url))
+
+    def test_get_queries(self):
+        """Testing get_queries"""
+        url = 'http://sarat:passwrd@example.com:8080?first=example&second=example2'
+        dict_queries = {'first': 'example','second': 'example2'}
+        self.assertEqual(dict_queries, URLparser.get_queries(url))
+
+    def tearDown(self):
+        pass
+
+if __name__ == '__main__':
+    unittest.main()
