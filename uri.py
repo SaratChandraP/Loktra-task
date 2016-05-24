@@ -15,7 +15,7 @@ class testURL(unittest.TestCase):
             print "setting up for test_get_domain"
 
         elif test_name == "Testing get_queries":
-            print "setting up for test_get_domain"
+            print "setting up for test_get_queries"
 
     def test_get_scheme(self):
         """Testing get_scheme"""
@@ -34,7 +34,15 @@ class testURL(unittest.TestCase):
         self.assertEqual(dict_queries, URLparser.get_queries(url))
 
     def tearDown(self):
-        pass
+        test_name = self.shortDescription()
+        if test_name == "Testing get_scheme":
+            print "cleaning up for test_get_scheme"
+
+        elif test_name == "Testing get_domain":
+            print "cleaning up for test_get_domain"
+
+        elif test_name == "Testing get_queries":
+            print "cleaning up for test_get_queries"
 
 if __name__ == '__main__':
     unittest.main()
