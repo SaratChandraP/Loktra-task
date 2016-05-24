@@ -19,7 +19,8 @@ switch (process.argv.length){
         query2();
         break;
     default:
-        console.log("Unknown case");
+        console.log("Extra arguments present !");
+        console.log("Enclose keyword within quotes if it contains whitespaces");
 }
 
 // Query 1: Find number of search results for a given keyword
