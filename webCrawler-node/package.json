@@ -18,6 +18,11 @@
   ],
   "author": "Sarat Chandra Pasumarthy",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SaratChandraP/Loktra-task/issues",
+    "email": "p.saratchandra4357@gmail.com"
+  },
+  "homepage": "https://github.com/SaratChandraP/Loktra-task#readme",
   "dependencies": {
     "cheerio": "^0.20.0",
     "request": "^2.72.0"
