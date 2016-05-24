@@ -28,6 +28,7 @@ function query1(){
     // Making user input keyword URL compatible
     var keyword = process.argv[2].replace(/\s/g,"+");
 
+    // Sending HTTP request
     request('http://www.shopping.com/products?KW=' + keyword, function (error, response, body) {
         if (error){
             throw Error(error);
@@ -35,17 +36,25 @@ function query1(){
         if (response.statusCode !== 200) {
             return console.log("Returned response code = " + response.statusCode);
         }
+        // In case of positive response
         if (!error && response.statusCode === 200){
+
+            // Load HTML content
             var $ = cheerio.load(body);
 
+            // Retrieve ID of the body element
             var body_id = $('body').attr("id");
+
+            // No results case
             if (body_id === "noResults") {
                 console.log("Sorry. No results returned");
             }
             else {
+                // Number of results is found in the span element of class numTotalResults
                 var result = $('span.numTotalResults').text();
-                matched = result.match(/of\s(\d*\+?)\n/);
-                console.log("Number of results returned = " + matched[1]);
+                // Using regex to retrieve total count
+                var num_results = result.match(/of\s(\d*\+?)\n/);
+                console.log("Number of results returned = " + num_results[1]);
             }
         }
     })
@@ -53,13 +62,23 @@ function query1(){
 
 // Query 2: Find all results for a given keyword on a specified page
 function query2(){
+    // User input args
     var given_keyword = process.argv[3];
     var page_num = process.argv[2];
 
+    // Check if page number is an integer
+    if(!page_num.match(/^\d+/)){
+        console.log("Error !! \nUsage: node script [page-number] keyword");
+        console.log("Enclose keyword within quotes if it contains whitespaces");    // Probable cause
+        process.exit(-1);
+    }
+
     console.log("Searching for keyword '"+given_keyword+"' at page number "+page_num);
 
+    // Making keyword URL compatible
     var keyword = given_keyword.replace(/\s/g,"+");
 
+    // Sending HTTP request to specified URL with keyword and page number
     request('http://www.shopping.com/products~PG-' + page_num + '?KW=' + keyword, function (error, response, body) {
         if (error){
             throw Error(error);
@@ -67,15 +86,22 @@ function query2(){
         else if (response.statusCode !== 200) {
             console.log("Returned response code = " + response.statusCode);
         }
+        // Checking for positive response
         else if (!error && response.statusCode === 200) {
+            // Load HTML content
             var $ = cheerio.load(body);
+
+            // Retrieve ID of the body element
             var body_id = $('body').attr("id");
 
+            // No results case
             if (body_id === "noResults") {
                 console.log("Sorry. No results returned")
             }
             else {
+                // Accessing elements/results with the keyword
                 $('div.gridBox > div.gridItemBtm').each(function (index) {
+                    // Getting title of the element/result
                     var results = $(this).find('a.productName > span').attr('title');
                     console.log(index + " " + results);
                 })
