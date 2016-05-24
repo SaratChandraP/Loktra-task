@@ -4,21 +4,22 @@
 var request = require('request');
 var cheerio = require('cheerio');
 
-// When no arguments are provided
-if (process.argv.length <= 2) {
-    //throw Error("Arguments missing \nUsage: node script [page-number] keyword");
-    console.error("Arguments missing \nUsage: node script [page-number] keyword");
-    process.exit(-1);
-}
-
-// Query type 1: program <keyword>
-if (process.argv.length == 3){
-    query1();
-}
-
-// Query type 2: program <page number> <keyword>
-if (process.argv.length == 4){
-    query2();
+// Checking for number of arguments passed
+switch (process.argv.length){
+    case 2:
+        // No arguments provided
+        console.error("Arguments missing \nUsage: node script [page-number] keyword");
+        break;
+    case 3:
+        // query type 1 to search for number of results for a given keyword
+        query1();
+        break;
+    case 4:
+        // query type 2 to get all results for a keyword in specified page
+        query2();
+        break;
+    default:
+        console.log("Unknown case");
 }
 
 // Query 1: Find number of search results for a given keyword
@@ -55,16 +56,18 @@ function query2(){
     var given_keyword = process.argv[3];
     var page_num = process.argv[2];
 
-    console.log("Searching for keyword: "+given_keyword+" at page number "+page_num);
+    console.log("Searching for keyword '"+given_keyword+"' at page number "+page_num);
 
     var keyword = given_keyword.replace(/\s/g,"+");
 
     request('http://www.shopping.com/products~PG-' + page_num + '?KW=' + keyword, function (error, response, body) {
-        if (error) console.log("Error: " + error);
-        if (response.statusCode !== 200) {
+        if (error){
+            throw Error(error);
+        }
+        else if (response.statusCode !== 200) {
             console.log("Returned response code = " + response.statusCode);
         }
-        if (!error && response.statusCode === 200) {
+        else if (!error && response.statusCode === 200) {
             var $ = cheerio.load(body);
             var body_id = $('body').attr("id");
 
