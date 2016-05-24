@@ -36,14 +36,47 @@ function query1(){
         }
         if (!error && response.statusCode === 200){
             var $ = cheerio.load(body);
-            var result = $('span.numTotalResults').text();
-            matched = result.match(/of\s(\d*\+?)\n/);
-            console.log("Number of results returned = " + matched[1]);
+
+            var body_id = $('body').attr("id");
+            if (body_id === "noResults") {
+                console.log("Sorry. No results returned");
+            }
+            else {
+                var result = $('span.numTotalResults').text();
+                matched = result.match(/of\s(\d*\+?)\n/);
+                console.log("Number of results returned = " + matched[1]);
+            }
         }
     })
 }
 
 // Query 2: Find all results for a given keyword on a specified page
 function query2(){
+    var given_keyword = process.argv[3];
+    var page_num = process.argv[2];
 
+    console.log("Searching for keyword: "+given_keyword+" at page number "+page_num);
+
+    var keyword = given_keyword.replace(/\s/g,"+");
+
+    request('http://www.shopping.com/products~PG-' + page_num + '?KW=' + keyword, function (error, response, body) {
+        if (error) console.log("Error: " + error);
+        if (response.statusCode !== 200) {
+            console.log("Returned response code = " + response.statusCode);
+        }
+        if (!error && response.statusCode === 200) {
+            var $ = cheerio.load(body);
+            var body_id = $('body').attr("id");
+
+            if (body_id === "noResults") {
+                console.log("Sorry. No results returned")
+            }
+            else {
+                $('div.gridBox > div.gridItemBtm').each(function (index) {
+                    var results = $(this).find('a.productName > span').attr('title');
+                    console.log(index + " " + results);
+                })
+            }
+        }
+    });
 }
