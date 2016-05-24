@@ -16,12 +16,13 @@ def reverse_hash(test_number):
     letters = "acdegilmnoprstuw"
     result = ''
     # Work backwards with the test_number to get the input string
-    while test_number > 0:
+    while test_number > (7*37):
         index = test_number % 37    # Gives index of letter in 'letters' string
         result += letters[index]    # Get that letter and append to result
         print test_number, index    # For verification purposes
         test_number = (test_number - index)/37
-    return result
+    hashed_string = result[::-1]   # reversing produces string backwards
+    return hashed_string
 
 print given_hash("leepadg")  # Given example: leepadg => 680131659347
 
